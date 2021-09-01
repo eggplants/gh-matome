@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+user="${1}"
+if { [ -z "$user" ] || [ "$#" -ne 1 ] || ! [[ "$user" =~ ^[a-zA-Z0-9_]+$ ]];}; then
+  echo "[!]: Usage: gh ${0/*\//} <gh-user>">&2
+  exit 1
+fi
+
+echo "[+]: Target user: ${user}">&2
+
+command -v jq curl >/dev/null || {
+  echo "[!]: Install requirements: curl, jq" >&2
+  exit 1
+}
+
+repo_len=$(curl -s \
+  -H "Accept: application/vnd.github.v3+json" \
+  "https://api.github.com/users/${user}" | jq '.public_repos')
+
+echo "[+]: Repo count: ${repo_len}">&2
+
+if [ "$repo_len" = "null" ]; then
+  echo "[!]: This user id is invalid or not exist.">&2
+  exit 1
+fi
+
+pagenate(){
+  i="$1"
+  [ "$((i%100))" = 0 ]
+  echo "$(($((i/100))-$(($??0:1))+1))"
+}
+
+page_len="$(pagenate $repo_len)"
+json_name="data_${user}_$(date +%Y-%m-%d_%H-%M-%S).json"
+
+seq "$page_len" | while read -r i; do
+  echo "[+]: Page: [${i}/${page_len}]">&2
+  curl -s \
+    -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/users/${user}/repos?per_page=100&type=owner&sort=created&direction=asc&page=$i"
+  sleep "$((2+RANDOM%10))"
+done |
+sed -z 's_}\n\]\n\[_},_g' | jq '
+  map({
+    "full_name": .full_name,
+    "fork": .fork,
+    "description": .description,
+    "created_at": .created_at,
+    "updated_at": .updated_at
+  })
+' > "$json_name"
+echo "[+]: Created: $PWD/${json_name}" >&2
