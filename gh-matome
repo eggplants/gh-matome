@@ -42,10 +42,16 @@ seq "$page_len" | while read -r i; do
 done |
 sed -z 's_}\n\]\n\[_},_g' | jq '
   map({
-    "full_name": .full_name,
-    "fork": .fork,
-    "description": .description,
+    "archived": .archived,
     "created_at": .created_at,
+    "description": .description,
+    "fork": .fork,
+    "forks_count": .forks_count,
+    "full_name": .full_name,
+    "id": .id,
+    "language": .language,
+    "size": .size,
+    "stargazers_count": .stargazers_count,
     "updated_at": .updated_at
   })
 ' > "$json_name"
