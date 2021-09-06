@@ -1,11 +1,17 @@
 # matome-gh
 
-Script to retrieve a list of repositories for a given GitHub user
+Script to retrieve a list of repositories for a given GitHub user for [gh](https://github.com/cli/cli).
+
+## Install
+
+```bash
+gh extension eggplants/gh-matome
+```
 
 ## Run
 
 ```bash
-./matome <gh-username>
+gh matome <gh-username>
 ```
 
 ## Example
