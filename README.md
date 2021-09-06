@@ -23,6 +23,9 @@ $ matome god
 [+]: Page: [1/1]
 [+]: Created: /home/eggplants/prog/matome/data_god_2021-09-06_19-54-49.json
 $ jq . *god*.json
+```
+
+```json
 [
   {
     "full_name": "god/rails",
