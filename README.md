@@ -5,7 +5,7 @@ Script to retrieve a list of repositories for a given GitHub user for [gh](https
 ## Install
 
 ```bash
-gh extension eggplants/gh-matome
+gh extension install eggplants/gh-matome
 ```
 
 ## Run
