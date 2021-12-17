@@ -1,4 +1,8 @@
-# matome-gh
+# USE IMPROVED SCRIPT: [eggplants/gh-repos](https://github.com/eggplants/gh-repos)
+
+---
+
+# gh-matome
 
 Script to retrieve a list of repositories for a given GitHub user for [gh](https://github.com/cli/cli).
 
